@@ -75,11 +75,15 @@ class TaskAssignColorOnDueDate extends Base
 
         foreach ($data['tasks'] as $task) {
             if ($task['date_due'] <= time() && $task['date_due'] > 0 && $task['color_id'] != $this->getParam('color_id')) {
-                $values = array(
-                    'id'       => $task['id'],
-                    'color_id' => $this->getParam('color_id'),
-                );
-                $results[] = $this->taskModificationModel->update($values, false);
+                $column_name = $this->columnModel->getColumnTitleById($task['column_id']);
+                if ( $column_name != "Erledigt" ) {
+                    $values = array(
+                        'id'       => $task['id'],
+                        'color_id' => $this->getParam('color_id'),
+                    );
+//                    print_r($values);
+                    $results[] = $this->taskModificationModel->update($values, false);
+                }
             }
         }
 
